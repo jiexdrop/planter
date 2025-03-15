@@ -56,6 +56,7 @@ function love.mousepressed(x, y, button)
               break
             end
           end
+          insertGrass(gameX)
           harvestedCount = harvestedCount + 1
           clickedOnEntity = true
           break
@@ -75,7 +76,6 @@ function love.mousepressed(x, y, button)
     end
     
     if gameY >= 60 and gameY <=80 and not clickedOnEntity then
-      print("click")
 
       local newPlant = {
         quad = plantGrowthStages[1],
@@ -91,4 +91,16 @@ function love.mousepressed(x, y, button)
       table.insert(entities, newPlant)
     end
   end
+end
+
+function insertGrass(posX)
+  local newGrass = {
+    quad = quads.grass,
+    x = posX,
+    y = 60,  -- Same y-coordinate as other grass
+    serial = #entities,
+    name = "grass",
+    direction = true
+  }
+  table.insert(entities, newGrass)
 end

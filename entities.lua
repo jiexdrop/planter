@@ -1,4 +1,4 @@
-local quads = {}
+quads = {}
 plantGrowthStages = {}
 
 function setupQuads()

@@ -13,6 +13,11 @@ function love.load()
   image = love.graphics.newImage("graphics/images.png")
   spriteBatch = love.graphics.newSpriteBatch(image)
   
+  gameFont = love.graphics.newFont("m5x7.ttf", 32) 
+  love.graphics.setFont(gameFont)
+  
+  harvestIconQuad = love.graphics.newQuad(100, 0, 20, 20, image:getDimensions())
+  
   setupEntities()
 end
 
@@ -38,8 +43,10 @@ function love.draw()
   end
   
   love.graphics.draw(spriteBatch)
-  love.graphics.print("Plants Harvested: " .. harvestedCount, 10, 10)
-  
+  love.graphics.setFont(gameFont)
+  love.graphics.scale(0.5, 0.5)
+  love.graphics.draw(image, harvestIconQuad, 10, 10)
+  love.graphics.print(harvestedCount, 40, 5)
   
   love.graphics.pop()
 end
