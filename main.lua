@@ -5,6 +5,8 @@ VIRTUAL_WIDTH = 3200
 VIRTUAL_HEIGHT = 1600
 entities = {}
 
+harvestedCount = 0
+
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")
   love.graphics.setBackgroundColor(0.38, 0.60, 1.0)
@@ -36,7 +38,8 @@ function love.draw()
   end
   
   love.graphics.draw(spriteBatch)
-  love.graphics.print("Hello World", 100, 100)
+  love.graphics.print("Plants Harvested: " .. harvestedCount, 10, 10)
+  
   
   love.graphics.pop()
 end

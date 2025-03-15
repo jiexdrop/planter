@@ -42,6 +42,27 @@ function love.mousepressed(x, y, button)
     
     local clickedOnEntity = false
     
+    -- Check for harvestable plants first
+    for i, plant in ipairs(plants) do
+      if gameX >= plant.x and gameX < plant.x + 20 and
+         gameY >= plant.y and gameY < plant.y + 20 then
+        -- Only allow harvesting fully grown plants (growth stage 7)
+        if plant.growthStage == 7 then
+          table.remove(plants, i)
+          -- Remove from entities table as well
+          for j, entity in ipairs(entities) do
+            if entity == plant then
+              table.remove(entities, j)
+              break
+            end
+          end
+          harvestedCount = harvestedCount + 1
+          clickedOnEntity = true
+          break
+        end
+      end
+    end
+    
     for i, entity in ipairs(entities) do
       if gameX >= entity.x and gameX < entity.x + 20 and
          gameY >= entity.y and gameY < entity.y + 20 then
