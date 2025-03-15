@@ -41,6 +41,7 @@ function love.mousepressed(x, y, button)
     local gameY = math.floor((y / sy) / 20) * 20
     
     local clickedOnEntity = false
+    local harvestedPlant = false
     
     -- Check for harvestable plants first
     for i, plant in ipairs(plants) do
@@ -59,19 +60,22 @@ function love.mousepressed(x, y, button)
           insertGrass(gameX)
           harvestedCount = harvestedCount + 1
           clickedOnEntity = true
+          harvestedPlant = true
           break
         end
       end
     end
     
-    for i, entity in ipairs(entities) do
-      if gameX >= entity.x and gameX < entity.x + 20 and
-         gameY >= entity.y and gameY < entity.y + 20 then
-        if entity.name ~= "Pedrez" and entity.name == "grass" then
-          table.remove(entities, i)
+    if not harvestedPlant then
+      for i, entity in ipairs(entities) do
+        if gameX >= entity.x and gameX < entity.x + 20 and
+           gameY >= entity.y and gameY < entity.y + 20 then
+          if entity.name ~= "Pedrez" and entity.name == "grass" then
+            table.remove(entities, i)
+          end
+          clickedOnEntity = true
+          break
         end
-        clickedOnEntity = true
-        break
       end
     end
     
