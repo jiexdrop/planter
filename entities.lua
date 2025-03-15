@@ -37,7 +37,7 @@ function setupEntities()
   end
 
   -- Grass entities
-  for baseX = 20, 160, 20 do
+  for baseX = 80, 120, 20 do
     table.insert(entities, {
       quad = quads.grass,
       x = baseX,

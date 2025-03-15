@@ -57,7 +57,9 @@ function love.mousepressed(x, y, button)
               break
             end
           end
-          insertGrass(gameX)
+          if math.random() > 0.5 then
+            insertGrass(gameX)
+          end
           harvestedCount = harvestedCount + 1
           clickedOnEntity = true
           harvestedPlant = true
