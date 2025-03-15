@@ -70,7 +70,8 @@ function love.mousepressed(x, y, button)
       for i, entity in ipairs(entities) do
         if gameX >= entity.x and gameX < entity.x + 20 and
            gameY >= entity.y and gameY < entity.y + 20 then
-          if entity.name ~= "Pedrez" and entity.name == "grass" then
+          if entity.name == "grass" then
+            seedsCount = seedsCount + 1
             table.remove(entities, i)
           end
           clickedOnEntity = true
@@ -79,8 +80,8 @@ function love.mousepressed(x, y, button)
       end
     end
     
-    if gameY >= 60 and gameY <=80 and not clickedOnEntity then
-
+    if gameY >= 60 and gameY <=80 and not clickedOnEntity and seedsCount > 0 then
+      seedsCount = seedsCount - 1
       local newPlant = {
         quad = plantGrowthStages[1],
         x = gameX,

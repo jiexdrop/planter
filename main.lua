@@ -6,6 +6,7 @@ VIRTUAL_HEIGHT = 1600
 entities = {}
 
 harvestedCount = 0
+seedsCount = 0
 
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")
@@ -17,6 +18,7 @@ function love.load()
   love.graphics.setFont(gameFont)
   
   harvestIconQuad = love.graphics.newQuad(100, 0, 20, 20, image:getDimensions())
+  seedsIconQuad = love.graphics.newQuad(120, 0, 20, 20, image:getDimensions())
   
   setupEntities()
 end
@@ -46,7 +48,9 @@ function love.draw()
   love.graphics.setFont(gameFont)
   love.graphics.scale(0.5, 0.5)
   love.graphics.draw(image, harvestIconQuad, 10, 10)
+  love.graphics.draw(image, seedsIconQuad, 10, 35)
   love.graphics.print(harvestedCount, 40, 5)
+  love.graphics.print(seedsCount, 40, 30)
   
   love.graphics.pop()
 end
