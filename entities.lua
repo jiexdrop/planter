@@ -13,6 +13,7 @@ function setupQuads()
   quads.radish = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
   quads.cloud = love.graphics.newQuad(80, 60, 20, 20, image:getDimensions())
   quads.bigcloud = love.graphics.newQuad(100, 60, 40, 20, image:getDimensions())
+  quads.ladybug = love.graphics.newQuad(120, 20, 40, 20, image:getDimensions())
 end
 
 function setupPlantQuads()
@@ -133,6 +134,17 @@ function setupEntities()
     direction = true
   }
   --table.insert(entities, chick)
+  
+  -- ladybug
+  ladybug = {
+    quad = quads.ladybug, 
+    x = 60, 
+    y = 20, 
+    serial = #entities, 
+    name = "Ladybug", 
+    direction = true
+  }
+  table.insert(entities, ladybug)
 
   -- Protagonist
   protagonist = {

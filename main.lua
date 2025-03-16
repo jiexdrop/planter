@@ -35,13 +35,10 @@ end
 
 function updateSun(dt)
   -- Move sun left and right
-  sun.x = sun.x + (sunSpeed * sunDirection * dt)
+  sun.x = sun.x + (sunSpeed * dt)
   
-  -- Reverse direction at screen edges
-  if sun.x <= 20 then
-    sunDirection = 1
-  elseif sun.x >= 160 then
-    sunDirection = -1
+  if sun.x >= 180 + 40 then
+    sun.x = -40 - math.random(0, 40)
   end
 end
 
