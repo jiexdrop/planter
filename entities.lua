@@ -11,8 +11,8 @@ function setupQuads()
   quads.sun = love.graphics.newQuad(60, 40, 20, 20, image:getDimensions())
   quads.grass = love.graphics.newQuad(20, 0, 20, 20, image:getDimensions())
   quads.radish = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
-  quads.cloud = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
-  quads.bigcloud = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
+  quads.cloud = love.graphics.newQuad(80, 60, 20, 20, image:getDimensions())
+  quads.bigcloud = love.graphics.newQuad(100, 60, 40, 20, image:getDimensions())
 end
 
 function setupPlantQuads()
@@ -79,6 +79,27 @@ function setupEntities()
     direction = 1
   }
   table.insert(entities, sun)
+  
+  cloud = {
+    quad = quads.cloud, 
+    x = 140, 
+    y = 20, 
+    serial = #entities, 
+    name = "cloud",
+    direction = true
+  }
+  table.insert(entities, cloud)
+  
+  
+  bigCloud = {
+    quad = quads.bigcloud, 
+    x = 40, 
+    y = 20, 
+    serial = #entities, 
+    name = "bigcloud",
+    direction = true
+  }
+  table.insert(entities, bigCloud)
 
   -- Radish
   radish = {

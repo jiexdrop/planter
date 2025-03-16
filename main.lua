@@ -30,6 +30,7 @@ end
 function love.update(dt)
   updateEntities(dt)
   updateSun(dt)
+  updateClouds(dt)
 end
 
 function updateSun(dt)
@@ -42,6 +43,22 @@ function updateSun(dt)
   elseif sun.x >= 160 then
     sunDirection = -1
   end
+end
+
+function updateClouds(dt)
+  -- Move sun left and right
+  cloud.x = cloud.x + (sunSpeed * 1 * dt)
+  bigCloud.x = bigCloud.x + (sunSpeed * 1 * dt)
+  
+  if cloud.x >= 180 + 20 then
+    cloud.x = -20 - math.random(0, 40)
+    cloud.y = math.random(0, 30)
+  end
+  if bigCloud.x >= 180 + 40 then
+    bigCloud.x = -40 - math.random(0, 40)
+    bigCloud.y = math.random(0, 30)
+  end
+  
 end
 
 function love.draw()

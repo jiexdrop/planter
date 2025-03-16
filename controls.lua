@@ -57,9 +57,7 @@ function love.mousepressed(x, y, button)
               break
             end
           end
-          if math.random() > 0.5 then
-            insertGrass(gameX)
-          end
+          insertGrass(gameX) -- Add grass on harvest
           harvestedCount = harvestedCount + 1
           clickedOnEntity = true
           harvestedPlant = true
@@ -104,7 +102,7 @@ function insertGrass(posX)
   local newGrass = {
     quad = quads.grass,
     x = posX,
-    y = 60,  -- Same y-coordinate as other grass
+    y = 60,
     serial = #entities,
     name = "grass",
     direction = true
