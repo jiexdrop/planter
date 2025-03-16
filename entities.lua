@@ -11,6 +11,8 @@ function setupQuads()
   quads.sun = love.graphics.newQuad(60, 40, 20, 20, image:getDimensions())
   quads.grass = love.graphics.newQuad(20, 0, 20, 20, image:getDimensions())
   quads.radish = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
+  quads.cloud = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
+  quads.bigcloud = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
 end
 
 function setupPlantQuads()
@@ -68,14 +70,15 @@ function setupEntities()
   })
 
   -- Sun
-  table.insert(entities, {
+  sun = {
     quad = quads.sun,
     x = 160,
     y = 10,
     serial = #entities,
     name = "sun",
-    direction = true
-  })
+    direction = 1
+  }
+  table.insert(entities, sun)
 
   -- Radish
   radish = {
@@ -126,6 +129,12 @@ plants = {}
 local plantGrowthTime = 3 -- seconds between growth stages
 timer = 0
 
+function isPlantInSunlight(plantX, plantY)
+  --print("Plant" .. plantX .. " - " .. plantY)
+  --print("sun" .. sun.x .. " - " .. sun.y)
+  local distanceToSun = math.sqrt((plantX - sun.x)^2 + (plantY - sun.y)^2)
+  return distanceToSun <= sunRadius
+end
 
 function updateEntities(dt)
   timer = timer + dt
@@ -136,7 +145,14 @@ function updateEntities(dt)
   
   -- Update plant growth
   for i, plant in ipairs(plants) do
-    plant.growthTimer = plant.growthTimer + dt
+    local growthMultiplier = 1.0
+    
+    -- Check if plant is in sunlight
+    if isPlantInSunlight(plant.x, plant.y) then
+      growthMultiplier = 2  -- faster growth in sunlight
+    end
+    
+    plant.growthTimer = plant.growthTimer + (dt * growthMultiplier)
     if plant.growthTimer >= plantGrowthTime and plant.growthStage < 7 then
       plant.growthTimer = 0
       plant.growthStage = plant.growthStage + 1

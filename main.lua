@@ -8,6 +8,10 @@ entities = {}
 harvestedCount = 0
 seedsCount = 0
 
+sunSpeed = 20  -- Pixels per second
+sunDirection = -1  -- -1 moves left, 1 moves right
+sunRadius = 55  -- Area of effect radius
+
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")
   love.graphics.setBackgroundColor(0.38, 0.60, 1.0)
@@ -25,6 +29,19 @@ end
 
 function love.update(dt)
   updateEntities(dt)
+  updateSun(dt)
+end
+
+function updateSun(dt)
+  -- Move sun left and right
+  sun.x = sun.x + (sunSpeed * sunDirection * dt)
+  
+  -- Reverse direction at screen edges
+  if sun.x <= 20 then
+    sunDirection = 1
+  elseif sun.x >= 160 then
+    sunDirection = -1
+  end
 end
 
 function love.draw()
