@@ -177,7 +177,7 @@ function isPlantInSunlight(plantX, plantY)
   --print("Plant" .. plantX .. " - " .. plantY)
   --print("sun" .. sun.x .. " - " .. sun.y)
   local distanceToSun = math.sqrt((plantX - sun.x)^2 + (plantY - sun.y)^2)
-  return distanceToSun <= sunRadius
+  return distanceToSun <= sun.radius
 end
 
 function updateEntities(dt)
@@ -185,6 +185,57 @@ function updateEntities(dt)
   
   if timer >= 3 then    
     timer = 0
+  end
+  
+  -- Ladybug AI movement and pollination
+  ladybug.moveTimer = ladybug.moveTimer + dt
+  
+  -- Update ladybug position
+  if ladybug.x < ladybug.targetX then
+    ladybug.x = math.min(ladybug.x + ladybug.speed * dt, ladybug.targetX)
+    ladybug.direction = true
+  elseif ladybug.x > ladybug.targetX then
+    ladybug.x = math.max(ladybug.x - ladybug.speed * dt, ladybug.targetX)
+    ladybug.direction = false
+  end
+  
+  if ladybug.y < ladybug.targetY then
+    ladybug.y = math.min(ladybug.y + ladybug.speed * dt, ladybug.targetY)
+  elseif ladybug.y > ladybug.targetY then
+    ladybug.y = math.max(ladybug.y - ladybug.speed * dt, ladybug.targetY)
+  end
+  
+  -- Choose new target when reached or timer expires
+  if ladybug.moveTimer >= ladybug.moveInterval or 
+     (math.abs(ladybug.x - ladybug.targetX) < 1 and math.abs(ladybug.y - ladybug.targetY) < 1) then
+    ladybug.moveTimer = 0
+    -- Find plants that need pollination
+    local foundTarget = false
+    for i, plant in ipairs(plants) do
+      if plant.growthStage == 5 and not plant.isPollinated then
+        ladybug.targetX = plant.x
+        ladybug.targetY = plant.y - 20 -- Fly slightly above the plant
+        foundTarget = true
+        break
+      end
+    end
+    
+    -- If no plants need pollination, choose random target
+    if not foundTarget then
+      ladybug.targetX = math.random(0, 180)
+      ladybug.targetY = math.random(20, 60)
+    end
+  end
+  
+  -- Check for pollination
+  for i, plant in ipairs(plants) do
+    if plant.growthStage == 5 and not plant.isPollinated then
+      local distance = math.sqrt((plant.x - ladybug.x)^2 + (plant.y - ladybug.y)^2)
+      if distance <= ladybug.pollinationRange then
+        plant.isPollinated = true
+        -- Optional: Add visual effect or sound for pollination
+      end
+    end
   end
   
   -- Update plant growth
@@ -196,11 +247,14 @@ function updateEntities(dt)
       growthMultiplier = 2  -- faster growth in sunlight
     end
     
-    plant.growthTimer = plant.growthTimer + (dt * growthMultiplier)
-    if plant.growthTimer >= plantGrowthTime and plant.growthStage < 7 then
-      plant.growthTimer = 0
-      plant.growthStage = plant.growthStage + 1
-      plant.quad = plantGrowthStages[plant.growthStage]
+    -- Only grow if below stage 5 OR if pollinated
+    if plant.growthStage < 5 or plant.isPollinated then
+      plant.growthTimer = plant.growthTimer + (dt * growthMultiplier)
+      if plant.growthTimer >= plantGrowthTime and plant.growthStage < 7 then
+        plant.growthTimer = 0
+        plant.growthStage = plant.growthStage + 1
+        plant.quad = plantGrowthStages[plant.growthStage]
+      end
     end
   end
 end
