@@ -85,7 +85,7 @@ function love.draw()
         image,
         plant.quad,
         plant.x,
-        plant.y, -- Adjust Y position to keep plant grounded
+        plant.y + (20 * squishY), -- Adjust Y position to keep plant grounded
         0,                         -- rotation
         scaleX,                   -- scale X
         scaleY                    -- scale Y

@@ -11,6 +11,7 @@ function createPollinationParticles()
         1, 1, 1, 0       -- Fade to transparent
     )
     particleSystem:setSpread(2*math.pi) -- Emit in all directions
+    particleSystem:setPosition(-100, -100) -- init outside of screen
     
     return particleSystem
 end

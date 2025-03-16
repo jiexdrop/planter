@@ -13,23 +13,7 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function move(dx, dy)
-  if protagonist.x < 20 then
-    dx = 1
-  end
-  if protagonist.x > 160 then
-    dx = -1
-  end
-
-  protagonist.x = protagonist.x + dx * 20
-  if dx == 1 then
-    protagonist.direction = true
-  else
-    protagonist.direction = false
-  end
-  
-  if radish.x == protagonist.x and radish.y == protagonist.y then
-    radish.x = radish.x + dx * 20
-  end
+  --pass
 end
 
 

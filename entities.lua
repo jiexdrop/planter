@@ -127,28 +127,6 @@ function setupEntities()
   }
   --table.insert(entities, radish)
   
-  -- Chicken
-  chicken = {
-    quad = quads.chicken, 
-    x = 20, 
-    y = 60, 
-    serial = #entities, 
-    name = "Chicken",
-    direction = true
-  }
-  --table.insert(entities, chicken)
-  
-  -- Chick
-  chick = {
-    quad = quads.chick, 
-    x = 40, 
-    y = 60, 
-    serial = #entities, 
-    name = "Chick",
-    direction = true
-  }
-  --table.insert(entities, chick)
-  
   -- ladybug
   ladybug = {
     quad = quads.ladybug, 
@@ -166,17 +144,6 @@ function setupEntities()
     pollinatedPlants = {} -- Keep track of which plants we've pollinated
   }
   table.insert(entities, ladybug)
-
-  -- Protagonist
-  protagonist = {
-    quad = quads.player, 
-    x = 60, 
-    y = 60, 
-    serial = #entities, 
-    name = "Pedrez", 
-    direction = true
-  }
-  table.insert(entities, protagonist)
 end
 
 plants = {}
