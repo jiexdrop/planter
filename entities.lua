@@ -1,5 +1,9 @@
+require("particles")
+
 quads = {}
 plantGrowthStages = {}
+local pollinationParticles = {}
+local plantAnimations = {}
 
 function setupQuads()
   quads.player = love.graphics.newQuad(0, 0, 20, 20, image:getDimensions())
@@ -23,9 +27,15 @@ function setupPlantQuads()
   end
 end
 
+function setupEffects()
+    -- Initialize particle systems
+    pollinationParticles = createPollinationParticles()
+end
+
 function setupEntities()
   setupQuads()
   setupPlantQuads()
+  setupEffects()
 
   -- Ground entities
   for baseX = 0, 180, 20 do
@@ -229,14 +239,34 @@ function updateEntities(dt)
   
   -- Check for pollination
   for i, plant in ipairs(plants) do
-    if plant.growthStage == 5 and not plant.isPollinated then
-      local distance = math.sqrt((plant.x - ladybug.x)^2 + (plant.y - ladybug.y)^2)
-      if distance <= ladybug.pollinationRange then
-        plant.isPollinated = true
-        -- Optional: Add visual effect or sound for pollination
+      if plant.growthStage == 5 and not plant.isPollinated then
+          local distance = math.sqrt((plant.x - ladybug.x)^2 + (plant.y - ladybug.y)^2)
+          if distance <= ladybug.pollinationRange then
+              plant.isPollinated = true
+              
+              -- Start particle effect
+              plant.particleSystem:reset()
+              plant.particleSystem:setPosition(plant.x + 10, plant.y + 10)
+              plant.particleSystem:emit(32)
+              
+              -- Start squish animation
+              plant.animationTimer = 0
+              plant.squishAmount = 0.3 -- Will squish to 70% of original size
+          end
       end
-    end
+      
+      -- Update particle system
+      if plant.particleSystem then
+          plant.particleSystem:update(dt)
+      end
+      
+      -- Update squish animation
+      if plant.animationTimer < 1 then
+          plant.animationTimer = plant.animationTimer + dt * 4
+          plant.squishAmount = math.max(0, 0.3 * (1 - plant.animationTimer))
+      end
   end
+  
   
   -- Update plant growth
   for i, plant in ipairs(plants) do

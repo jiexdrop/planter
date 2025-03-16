@@ -71,6 +71,32 @@ function love.draw()
     end
   end
   
+  -- plants
+  
+  for i, plant in ipairs(plants) do
+    -- Calculate squish effect
+    local squishY = plant.squishAmount or 0
+    local originalScale = 1 -- assuming original scale is 1
+    local scaleX = originalScale * (1 + squishY)
+    local scaleY = originalScale * (1 - squishY)
+    
+    -- Draw the plant with squish effect
+    love.graphics.draw(
+        image,
+        plant.quad,
+        plant.x,
+        plant.y, -- Adjust Y position to keep plant grounded
+        0,                         -- rotation
+        scaleX,                   -- scale X
+        scaleY                    -- scale Y
+    )
+    
+    -- Draw particle system
+    if plant.particleSystem then
+        love.graphics.draw(plant.particleSystem, 0, 0)
+    end 
+  end
+  
   love.graphics.draw(spriteBatch)
   love.graphics.setFont(gameFont)
   love.graphics.scale(0.5, 0.5)

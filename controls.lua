@@ -94,9 +94,12 @@ function love.mousepressed(x, y, button)
         growthTimer = 0,
         isPollinated = false,
         awaitingPollination = false,
+        animationTimer = 0,
+        squishAmount = 0,
+        particleSystem = createPollinationParticles()
       }
       table.insert(plants, newPlant)
-      table.insert(entities, newPlant)
+      --table.insert(entities, newPlant)
     end
   end
 end
