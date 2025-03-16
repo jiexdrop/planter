@@ -9,11 +9,12 @@ function love.keypressed(key, scancode, isrepeat)
   elseif scancode == "w" then -- move up
     dy = -1
   end
-  move(dx, dy) 
-end
 
-function move(dx, dy)
-  --pass
+  if key == "b" then  -- 'b' to open/close shop
+    shop.toggle()
+  end
+  
+  shop.keypressed(key)
 end
 
 
@@ -43,6 +44,7 @@ function love.mousepressed(x, y, button)
           end
           addGrass(gameX) -- Add grass on harvest
           harvestedCount = harvestedCount + 1
+          shop.money = shop.money + 20 
           clickedOnEntity = true
           harvestedPlant = true
           break

@@ -1,5 +1,6 @@
 require("entities")
 require("controls")
+shop = require("shop")
 
 VIRTUAL_WIDTH = 3200
 VIRTUAL_HEIGHT = 1600
@@ -21,12 +22,14 @@ function love.load()
   seedsIconQuad = love.graphics.newQuad(120, 0, 20, 20, image:getDimensions())
   
   setupEntities()
+  shop.init(image)
 end
 
 function love.update(dt)
   updateEntities(dt)
   updateSun(dt)
   updateClouds(dt)
+  shop.update(dt)
 end
 
 function updateSun(dt)
@@ -95,6 +98,7 @@ function love.draw()
     if plant.particleSystem then
         love.graphics.draw(plant.particleSystem, 0, 0)
     end 
+
   end
   
   love.graphics.draw(spriteBatch)
@@ -106,4 +110,9 @@ function love.draw()
   love.graphics.print(seedsCount, 40, 30)
   
   love.graphics.pop()
+  
+  if shop.isOpen then
+    shop.draw()
+  end
 end
+
