@@ -77,7 +77,9 @@ function setupEntities()
     y = 10,
     serial = #entities,
     name = "sun",
-    direction = 1
+    direction = 1,
+    speed = 10,  -- Pixels per second
+    radius = 55,  -- Area of effect radius
   }
   table.insert(entities, sun)
   
@@ -87,7 +89,8 @@ function setupEntities()
     y = 20, 
     serial = #entities, 
     name = "cloud",
-    direction = true
+    direction = true,
+    speed = 10
   }
   table.insert(entities, cloud)
   
@@ -98,7 +101,8 @@ function setupEntities()
     y = 20, 
     serial = #entities, 
     name = "bigcloud",
-    direction = true
+    direction = true,
+    speed = 10
   }
   table.insert(entities, bigCloud)
 
@@ -142,7 +146,14 @@ function setupEntities()
     y = 20, 
     serial = #entities, 
     name = "Ladybug", 
-    direction = true
+    direction = true,
+    moveTimer = 0,
+    moveInterval = 1.5, -- Time between movement changes
+    targetX = 60,
+    targetY = 20,
+    speed = 30, -- Movement speed in pixels per second
+    pollinationRange = 25, -- How close the ladybug needs to be to pollinate
+    pollinatedPlants = {} -- Keep track of which plants we've pollinated
   }
   table.insert(entities, ladybug)
 

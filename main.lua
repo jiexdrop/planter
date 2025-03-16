@@ -8,10 +8,6 @@ entities = {}
 harvestedCount = 0
 seedsCount = 0
 
-sunSpeed = 20  -- Pixels per second
-sunDirection = -1  -- -1 moves left, 1 moves right
-sunRadius = 55  -- Area of effect radius
-
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")
   love.graphics.setBackgroundColor(0.38, 0.60, 1.0)
@@ -35,7 +31,7 @@ end
 
 function updateSun(dt)
   -- Move sun left and right
-  sun.x = sun.x + (sunSpeed * dt)
+  sun.x = sun.x + (sun.speed * dt)
   
   if sun.x >= 180 + 40 then
     sun.x = -40 - math.random(0, 40)
@@ -44,8 +40,8 @@ end
 
 function updateClouds(dt)
   -- Move sun left and right
-  cloud.x = cloud.x + (sunSpeed * 1 * dt)
-  bigCloud.x = bigCloud.x + (sunSpeed * 1 * dt)
+  cloud.x = cloud.x + (cloud.speed * 1 * dt)
+  bigCloud.x = bigCloud.x + (bigCloud.speed * 1 * dt)
   
   if cloud.x >= 180 + 20 then
     cloud.x = -20 - math.random(0, 40)
