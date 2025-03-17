@@ -115,14 +115,21 @@ function love.draw()
   love.graphics.draw(spriteBatch)
   love.graphics.setFont(gameFont)
   love.graphics.scale(0.5, 0.5)
-  love.graphics.draw(image, quads.kale, 10, 10)
-  love.graphics.draw(image, quads.radish, 10, 35)
-  love.graphics.draw(image, quads.tomato, 10, 60)
-  love.graphics.draw(image, quads.corn, 10, 85)
-  love.graphics.print(shop.seeds["kale"], 40, 5)
-  love.graphics.print(shop.seeds["radish"], 40, 30)
-  love.graphics.print(shop.seeds["tomato"], 40, 55)
-  love.graphics.print(shop.seeds["corn"], 40, 80)
+
+  love.graphics.setColor(1, 1, 1, 1)
+  
+  local seedY = 5
+  for seedType, count in pairs(shop.seeds) do
+      if count > 0 then
+          -- Draw seed icon (you'll need to make quads for each seed type)
+          love.graphics.draw(image, getSeedQuad(seedType), 10, seedY + 5)
+          
+          -- Draw seed name and count
+          love.graphics.print(PLANT_TYPES[seedType].name .. ": " .. count, 40, seedY)
+          
+          seedY = seedY + 25
+      end
+  end
   
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.print("Selected: " .. PLANT_TYPES[shop.selectedSeedType].name, 40, 165)
@@ -145,6 +152,20 @@ function love.draw()
   if shop.isOpen then
     shop.draw()
   end
+end
+
+function getSeedQuad(seedType)
+    -- Define quads for seed icons or use existing ones
+    if seedType == "kale" then
+        return quads.kale
+    elseif seedType == "radish" then
+        return quads.radish
+    elseif seedType == "tomato" then
+        return quads.tomato
+    elseif seedType == "corn" then
+        return quads.corn
+    end
+    return seedsIconQuad -- Default
 end
 
 
