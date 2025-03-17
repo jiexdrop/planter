@@ -83,6 +83,10 @@ function love.draw()
     local scaleX = originalScale * (1 + squishY)
     local scaleY = originalScale * (1 - squishY)
     
+    if plant.growthStage == 5 and not plant.isPollinated then
+      love.graphics.draw(image, quads.pollinationIndicator, plant.x, plant.y + 5)
+    end
+    
     -- Draw the plant with squish effect
     love.graphics.draw(
         image,
@@ -106,8 +110,10 @@ function love.draw()
   love.graphics.scale(0.5, 0.5)
   love.graphics.draw(image, harvestIconQuad, 10, 10)
   love.graphics.draw(image, seedsIconQuad, 10, 35)
+  love.graphics.draw(image, quads.radish, 10, 60)
   love.graphics.print(harvestedCount, 40, 5)
-  love.graphics.print(seedsCount, 40, 30)
+  love.graphics.print(shop.seeds["kale"], 40, 30)
+  love.graphics.print(shop.seeds["radish"], 40, 55)
   
   love.graphics.pop()
   

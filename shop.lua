@@ -1,34 +1,57 @@
 local shop = {
     isOpen = false,
-    money = 0,  -- Starting money
+    money = 100,
     selectedItem = 1,
+    selectedSeedType = "kale",  -- Default selected seed type
+    seeds = {
+        kale = 1,
+        radish = 0,
+        tomato = 0,
+        corn = 0
+    },
     items = {
         {
             name = "Kale Seeds",
-            price = 10,
-            icon = nil,  -- We'll set this in init
+            type = "kale",
+            price = PLANT_TYPES.kale.seedPrice,
+            icon = nil,
             description = "Basic crop, grows quickly"
         },
         {
             name = "Radish Seeds",
-            price = 100,
-            icon = nil,  -- We'll set this in init
-            description = "Basic crop, grows quickly"
+            type = "radish",
+            price = PLANT_TYPES.radish.seedPrice,
+            icon = nil,
+            description = "Medium value crop"
         },
         {
             name = "Tomato Seeds",
-            price = 1000,
+            type = "tomato",
+            price = PLANT_TYPES.tomato.seedPrice,
             icon = nil,
-            description = "Takes longer but worth more"
+            description = "High value crop"
         },
         {
             name = "Corn Seeds",
-            price = 2000,
+            type = "corn",
+            price = PLANT_TYPES.corn.seedPrice,
             icon = nil,
-            description = "High yield crop"
+            description = "Highest value crop"
         }
     }
 }
+
+-- Modify the buySelected function
+function shop.buySelected()
+    local item = shop.items[shop.selectedItem]
+    if shop.money >= item.price then
+        shop.money = shop.money - item.price
+        shop.seeds[item.type] = shop.seeds[item.type] + 1
+        shop.selectedSeedType = item.type  -- Automatically select the bought seed type
+        return true
+    end
+    return false
+end
 
 local function drawShopItem(item, x, y, selected)
     -- Draw selection background if selected
@@ -95,16 +118,6 @@ function shop.draw()
     love.graphics.print("Enter: Buy", shopX + 10, shopY + 290)
     love.graphics.print("Esc: Close", shopX + 130, shopY + 290)
     love.graphics.setColor(1, 1, 1, 1)
-end
-
-function shop.buySelected()
-    local item = shop.items[shop.selectedItem]
-    if shop.money >= item.price then
-        shop.money = shop.money - item.price
-        seedsCount = seedsCount + 1
-        return true
-    end
-    return false
 end
 
 function shop.keypressed(key)

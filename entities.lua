@@ -6,9 +6,6 @@ local pollinationParticles = {}
 local plantAnimations = {}
 
 function setupQuads()
-  quads.player = love.graphics.newQuad(0, 0, 20, 20, image:getDimensions())
-  quads.chicken = love.graphics.newQuad(0, 20, 20, 20, image:getDimensions())
-  quads.chick = love.graphics.newQuad(20, 20, 20, 20, image:getDimensions())
   quads.ground = love.graphics.newQuad(20, 40, 20, 20, image:getDimensions())
   quads.fence = love.graphics.newQuad(0, 40, 20, 20, image:getDimensions())
   quads.tree = love.graphics.newQuad(40, 40, 20, 20, image:getDimensions())
@@ -18,13 +15,56 @@ function setupQuads()
   quads.cloud = love.graphics.newQuad(80, 60, 20, 20, image:getDimensions())
   quads.bigcloud = love.graphics.newQuad(100, 60, 40, 20, image:getDimensions())
   quads.ladybug = love.graphics.newQuad(120, 20, 40, 20, image:getDimensions())
+  quads.pollinationIndicator = love.graphics.newQuad(100, 20, 20, 20, image:getDimensions())
 end
 
+PLANT_TYPES = {
+    kale = {
+        name = "Kale",
+        spriteY = 80,  -- Y position in spritesheet (existing kale position)
+        growthStages = 7,  -- 0 to 6
+        harvestValue = 20,
+        seedPrice = 10
+    },
+    radish = {
+        name = "Radish",
+        spriteY = 100,  -- Position after kale (adjust based on your spritesheet)
+        growthStages = 7,
+        harvestValue = 30,
+        seedPrice = 15
+    },
+    tomato = {
+        name = "Tomato",
+        spriteY = 120,  -- Position after radish
+        growthStages = 7,
+        harvestValue = 40,
+        seedPrice = 20
+    },
+    corn = {
+        name = "Corn",
+        spriteY = 140,  -- Position after tomato
+        growthStages = 7,
+        harvestValue = 50,
+        seedPrice = 25
+    }
+}
+
 function setupPlantQuads()
-  -- Load plant growth stages
-  for i = 0, 6 do
-    plantGrowthStages[i+1] = love.graphics.newQuad(i*20, 80, 20, 20, image:getDimensions())
-  end
+    plantGrowthStages = {}
+    
+    -- For each plant type
+    for plantType, data in pairs(PLANT_TYPES) do
+        plantGrowthStages[plantType] = {}
+        -- Load growth stages for this plant type
+        for i = 0, data.growthStages - 1 do
+            plantGrowthStages[plantType][i + 1] = love.graphics.newQuad(
+                i * 20,        -- X position
+                data.spriteY,  -- Y position (varies by plant type)
+                20, 20,        -- Width and height
+                image:getDimensions()
+            )
+        end
+    end
 end
 
 function setupEffects()
@@ -293,7 +333,7 @@ function updateEntities(dt)
       if plant.growthTimer >= plantGrowthTime and plant.growthStage < 7 then
         plant.growthTimer = 0
         plant.growthStage = plant.growthStage + 1
-        plant.quad = plantGrowthStages[plant.growthStage]
+        plant.quad = plantGrowthStages[plant.plantType or "kale"][plant.growthStage]
       end
     end
   end
