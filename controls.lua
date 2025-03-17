@@ -1,13 +1,6 @@
 function love.keypressed(key, scancode, isrepeat)
-  local dx, dy = 0, 0
-  if scancode == "d" then -- move right
-    dx = 1
-  elseif scancode == "a" then -- move left
-    dx = -1
-  elseif scancode == "s" then -- move down
-    dy = 1
-  elseif scancode == "w" then -- move up
-    dy = -1
+  if key == "p" then
+    gameState.toggle()
   end
 
   if key == "b" then  -- 'b' to open/close shop

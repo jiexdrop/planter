@@ -9,6 +9,17 @@ entities = {}
 harvestedCount = 0
 seedsCount = 1 -- intial seeds
 
+gameState = {
+    current = "playing",  -- Could be "playing", "paused", or "gameOver"
+    toggle = function()
+        if gameState.current == "playing" then
+            gameState.current = "paused"
+        else
+            gameState.current = "playing"
+        end
+    end
+}
+
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")
   love.graphics.setBackgroundColor(0.38, 0.60, 1.0)
@@ -26,6 +37,8 @@ function love.load()
 end
 
 function love.update(dt)
+  if gameState.current ~= "playing" then return end
+  
   updateEntities(dt)
   updateSun(dt)
   updateClouds(dt)
@@ -121,4 +134,6 @@ function love.draw()
     shop.draw()
   end
 end
+
+
 

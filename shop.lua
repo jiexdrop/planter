@@ -80,6 +80,7 @@ function shop.init(gameImage)
 end
 
 function shop.toggle()
+    gameState.toggle()
     shop.isOpen = not shop.isOpen
 end
 
