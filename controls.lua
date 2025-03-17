@@ -23,7 +23,6 @@ function love.wheelmoved(x, y)
       end
   end
 end
-
 function love.mousepressed(x, y, button)
     if button == 1 then -- Left mouse button
         local sx = VIRTUAL_WIDTH / love.graphics.getWidth()
@@ -33,17 +32,18 @@ function love.mousepressed(x, y, button)
         
         local clickedOnEntity = false
         local harvestedPlant = false
+        local cellOccupied = false
         
-        -- Check for harvestable plants first
-        for i, plant in ipairs(plants) do
-            if gameX >= plant.x and gameX < plant.x + 20 and
-               gameY >= plant.y and gameY < plant.y + 20 then
-                -- Only allow harvesting fully grown plants (growth stage 7)
+        -- First check if there's already a plant at this location
+        for _, plant in ipairs(plants) do
+            if plant.x == gameX and plant.y == gameY then
+                cellOccupied = true
+                -- Handle harvesting fully grown plants
                 if plant.growthStage == 7 then
                     if plant.particleSystem then
-                      plant.particleSystem:release()  -- Clean up the particle system
+                        plant.particleSystem:release()  -- Clean up the particle system
                     end
-                    table.remove(plants, i)
+                    table.remove(plants, _)
                     -- Remove from entities table as well
                     for j, entity in ipairs(entities) do
                         if entity == plant then
@@ -55,15 +55,17 @@ function love.mousepressed(x, y, button)
                     shop.money = shop.money + (PLANT_TYPES[plant.plantType] and PLANT_TYPES[plant.plantType].harvestValue or 10)
                     clickedOnEntity = true
                     harvestedPlant = true
+                    cellOccupied = false -- Cell is now free after harvesting
                     break
                 end
+                break
             end
         end
         
+        -- Check for other entities at this location
         if not harvestedPlant then
             for i, entity in ipairs(entities) do
-                if gameX >= entity.x and gameX < entity.x + 20 and
-                   gameY >= entity.y and gameY < entity.y + 20 then
+                if gameX == entity.x and gameY == entity.y then
                     if entity.name == "grass" then
                         table.remove(entities, i)
                     end
@@ -76,8 +78,8 @@ function love.mousepressed(x, y, button)
         -- Default to kale if no selection is made
         local plantType = shop.selectedSeedType or "kale"
         
-        -- Planting logic
-        if gameY >= 60 and gameY <= 80 and not clickedOnEntity and shop.seeds[plantType] > 0 then
+        -- Planting logic - only plant if cell is not occupied by another plant
+        if gameY >= 60 and gameY <= 80 and not clickedOnEntity and not cellOccupied and shop.seeds[plantType] > 0 then
             shop.seeds[plantType] = shop.seeds[plantType] - 1 
             -- Create new plant
             local newPlant = {
