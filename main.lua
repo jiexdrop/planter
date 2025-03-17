@@ -117,11 +117,17 @@ function love.draw()
   love.graphics.scale(0.5, 0.5)
 
   love.graphics.setColor(1, 1, 1, 1)
-  
+
+  -- Keep track of where each seed type is positioned
+  local seedPositions = {}
   local seedY = 5
+
   for seedType, count in pairs(shop.seeds) do
       if count > 0 then
-          -- Draw seed icon (you'll need to make quads for each seed type)
+          -- Store the y position for this seed type
+          seedPositions[seedType] = seedY
+          
+          -- Draw seed icon
           love.graphics.draw(image, getSeedQuad(seedType), 10, seedY + 5)
           
           -- Draw seed name and count
@@ -130,23 +136,17 @@ function love.draw()
           seedY = seedY + 25
       end
   end
-  
+
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.print("Selected: " .. PLANT_TYPES[shop.selectedSeedType].name, 40, 165)
-  
-  -- Draw selection highlight around the selected seed icon
-  love.graphics.setColor(0.8, 0.8, 0.2, 0.8)
-  if shop.selectedSeedType == "kale" then
-    love.graphics.rectangle("line", 8, 8, 24, 24)
-  elseif shop.selectedSeedType == "radish" then
-    love.graphics.rectangle("line", 8, 33, 24, 24)
-  elseif shop.selectedSeedType == "tomato" then
-    love.graphics.rectangle("line", 8, 58, 24, 24)
-  elseif shop.selectedSeedType == "corn" then
-    love.graphics.rectangle("line", 8, 83, 24, 24)
+
+  -- Draw selection highlight around the currently selected seed type
+  if seedPositions[shop.selectedSeedType] then
+      love.graphics.setColor(0.8, 0.8, 0.2, 0.8)
+      love.graphics.rectangle("line", 8, seedPositions[shop.selectedSeedType] + 5, 24, 24)
+      love.graphics.setColor(1, 1, 1, 1)
   end
-  love.graphics.setColor(1, 1, 1, 1)
-  
+
   love.graphics.pop()
   
   if shop.isOpen then
