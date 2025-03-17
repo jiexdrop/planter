@@ -74,8 +74,17 @@ end
 function shop.init(gameImage)
     -- Set up shop icons using your spritesheet
     for i, item in ipairs(shop.items) do
-        -- You'll need to add appropriate quads to your spritesheet for seeds
-        item.icon = love.graphics.newQuad(120, 0, 20, 20, gameImage:getDimensions())
+        if(item.type == "kale") then
+          item.icon = love.graphics.newQuad(100, 0, 20, 20, gameImage:getDimensions())
+        elseif(item.type == "radish") then
+          item.icon = love.graphics.newQuad(20, 60, 20, 20, image:getDimensions())
+        elseif(item.type == "tomato") then
+          item.icon = love.graphics.newQuad(140, 0, 20, 20, gameImage:getDimensions())
+        elseif(item.type == "corn") then
+          item.icon = love.graphics.newQuad(160, 0, 20, 20, gameImage:getDimensions())
+        else
+          item.icon = love.graphics.newQuad(120, 0, 20, 20, gameImage:getDimensions())
+        end
     end
 end
 

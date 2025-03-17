@@ -8,6 +8,20 @@ function love.keypressed(key, scancode, isrepeat)
   end
   
   shop.keypressed(key)
+  
+  if not shop.isOpen then
+    if key == "up" or key == "down" then
+        cycleSelectedSeed(key == "up" and -1 or 1)
+    end
+  end
+end
+
+function love.wheelmoved(x, y)
+  if not shop.isOpen then
+      if y ~= 0 then
+          cycleSelectedSeed(y > 0 and -1 or 1)
+      end
+  end
 end
 
 function love.mousepressed(x, y, button)
@@ -38,7 +52,6 @@ function love.mousepressed(x, y, button)
                         end
                     end
                     addGrass(gameX) -- Add grass on harvest
-                    harvestedCount = harvestedCount + 1
                     shop.money = shop.money + (PLANT_TYPES[plant.plantType] and PLANT_TYPES[plant.plantType].harvestValue or 10)
                     clickedOnEntity = true
                     harvestedPlant = true
@@ -98,4 +111,37 @@ function addGrass(posX)
     direction = true,
   }
   table.insert(entities, newGrass)
+end
+
+function cycleSelectedSeed(direction)
+    local seedTypes = {}
+    for seedType, count in pairs(shop.seeds) do
+        if count > 0 then
+            table.insert(seedTypes, seedType)
+        end
+    end
+    
+    -- Only cycle if we have more than one seed type
+    if #seedTypes > 1 then
+        table.sort(seedTypes)
+        
+        -- Find current seed index
+        local currentIndex = 1
+        for i, seedType in ipairs(seedTypes) do
+            if seedType == shop.selectedSeedType then
+                currentIndex = i
+                break
+            end
+        end
+        
+        -- Calculate new index with wrap-around
+        local newIndex = currentIndex + direction
+        if newIndex < 1 then
+            newIndex = #seedTypes
+        elseif newIndex > #seedTypes then
+            newIndex = 1
+        end
+        
+        shop.selectedSeedType = seedTypes[newIndex]
+    end
 end

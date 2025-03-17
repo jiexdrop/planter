@@ -16,6 +16,10 @@ function setupQuads()
   quads.bigcloud = love.graphics.newQuad(100, 60, 40, 20, image:getDimensions())
   quads.ladybug = love.graphics.newQuad(120, 20, 40, 20, image:getDimensions())
   quads.pollinationIndicator = love.graphics.newQuad(100, 20, 20, 20, image:getDimensions())
+  quads.tomato = love.graphics.newQuad(140, 0, 20, 20, image:getDimensions())
+  quads.kale = love.graphics.newQuad(100, 0, 20, 20, image:getDimensions())
+  quads.seeds = love.graphics.newQuad(120, 0, 20, 20, image:getDimensions())
+  quads.corn = love.graphics.newQuad(160, 0, 20, 20, image:getDimensions())
 end
 
 PLANT_TYPES = {
@@ -319,22 +323,33 @@ function updateEntities(dt)
   
   
   -- Update plant growth
-  for i, plant in ipairs(plants) do
-    local growthMultiplier = 1.0
-    
-    -- Check if plant is in sunlight
-    if isPlantInSunlight(plant.x, plant.y) then
-      growthMultiplier = 2  -- faster growth in sunlight
+    for i, plant in ipairs(plants) do
+        local growthMultiplier = 1.0
+        
+        -- Check if plant is in sunlight
+        if isPlantInSunlight(plant.x, plant.y) then
+            growthMultiplier = 2  -- faster growth in sunlight
+        end
+        
+        -- Fix the growth logic
+        plant.growthTimer = plant.growthTimer + (dt * growthMultiplier)
+        
+        -- Only grow if below stage 7
+        if plant.growthTimer >= plantGrowthTime and plant.growthStage < 7 then
+            plant.growthTimer = 0
+            plant.growthStage = plant.growthStage + 1
+            
+            -- If reached stage 5 and not pollinated, wait for pollination
+            if plant.growthStage == 5 and not plant.isPollinated then
+                plant.awaitingPollination = true
+            else
+                -- Only progress past stage 5 if pollinated
+                if plant.growthStage > 5 and not plant.isPollinated then
+                    plant.growthStage = 5  -- Stay at stage 5 until pollinated
+                else
+                    plant.quad = plantGrowthStages[plant.plantType or "kale"][plant.growthStage]
+                end
+            end
+        end
     end
-    
-    -- Only grow if below stage 5 OR if pollinated
-    if plant.growthStage < 5 or plant.isPollinated then
-      plant.growthTimer = plant.growthTimer + (dt * growthMultiplier)
-      if plant.growthTimer >= plantGrowthTime and plant.growthStage < 7 then
-        plant.growthTimer = 0
-        plant.growthStage = plant.growthStage + 1
-        plant.quad = plantGrowthStages[plant.plantType or "kale"][plant.growthStage]
-      end
-    end
-  end
 end

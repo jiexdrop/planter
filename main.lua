@@ -6,9 +6,6 @@ VIRTUAL_WIDTH = 3200
 VIRTUAL_HEIGHT = 1600
 entities = {}
 
-harvestedCount = 0
-seedsCount = 1 -- intial seeds
-
 gameState = {
     current = "playing",  -- Could be "playing", "paused", or "gameOver"
     toggle = function()
@@ -28,9 +25,6 @@ function love.load()
   
   gameFont = love.graphics.newFont("m5x7.ttf", 32) 
   love.graphics.setFont(gameFont)
-  
-  harvestIconQuad = love.graphics.newQuad(100, 0, 20, 20, image:getDimensions())
-  seedsIconQuad = love.graphics.newQuad(120, 0, 20, 20, image:getDimensions())
   
   setupEntities()
   shop.init(image)
@@ -121,12 +115,30 @@ function love.draw()
   love.graphics.draw(spriteBatch)
   love.graphics.setFont(gameFont)
   love.graphics.scale(0.5, 0.5)
-  love.graphics.draw(image, harvestIconQuad, 10, 10)
-  love.graphics.draw(image, seedsIconQuad, 10, 35)
-  love.graphics.draw(image, quads.radish, 10, 60)
-  love.graphics.print(harvestedCount, 40, 5)
-  love.graphics.print(shop.seeds["kale"], 40, 30)
-  love.graphics.print(shop.seeds["radish"], 40, 55)
+  love.graphics.draw(image, quads.kale, 10, 10)
+  love.graphics.draw(image, quads.radish, 10, 35)
+  love.graphics.draw(image, quads.tomato, 10, 60)
+  love.graphics.draw(image, quads.corn, 10, 85)
+  love.graphics.print(shop.seeds["kale"], 40, 5)
+  love.graphics.print(shop.seeds["radish"], 40, 30)
+  love.graphics.print(shop.seeds["tomato"], 40, 55)
+  love.graphics.print(shop.seeds["corn"], 40, 80)
+  
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.print("Selected: " .. PLANT_TYPES[shop.selectedSeedType].name, 40, 165)
+  
+  -- Draw selection highlight around the selected seed icon
+  love.graphics.setColor(0.8, 0.8, 0.2, 0.8)
+  if shop.selectedSeedType == "kale" then
+    love.graphics.rectangle("line", 8, 8, 24, 24)
+  elseif shop.selectedSeedType == "radish" then
+    love.graphics.rectangle("line", 8, 33, 24, 24)
+  elseif shop.selectedSeedType == "tomato" then
+    love.graphics.rectangle("line", 8, 58, 24, 24)
+  elseif shop.selectedSeedType == "corn" then
+    love.graphics.rectangle("line", 8, 83, 24, 24)
+  end
+  love.graphics.setColor(1, 1, 1, 1)
   
   love.graphics.pop()
   
