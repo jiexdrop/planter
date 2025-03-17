@@ -91,7 +91,7 @@ function love.draw()
     local scaleY = originalScale * (1 - squishY)
     
     if plant.growthStage == 5 and not plant.isPollinated then
-      love.graphics.draw(image, quads.pollinationIndicator, plant.x, plant.y + 5)
+      love.graphics.draw(image, quads.pollinationIndicator, plant.x, plant.y)
     end
     
     -- Draw the plant with squish effect
@@ -138,7 +138,7 @@ function love.draw()
   end
 
   love.graphics.setColor(1, 1, 1, 1)
-  love.graphics.print("Selected: " .. PLANT_TYPES[shop.selectedSeedType].name, 40, 165)
+  --love.graphics.print("Selected: " .. PLANT_TYPES[shop.selectedSeedType].name, 40, 165)
 
   -- Draw selection highlight around the currently selected seed type
   if seedPositions[shop.selectedSeedType] then

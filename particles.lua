@@ -3,7 +3,7 @@ function createPollinationParticles()
     
     -- Configure the particle system
     particleSystem:setParticleLifetime(0.5, 1) -- Particles live between 0.5 and 1 seconds
-    particleSystem:setEmissionRate(20)
+    particleSystem:setEmissionRate(0) -- Set to 0 for manual emission
     particleSystem:setSizeVariation(0.5)
     particleSystem:setLinearAcceleration(-20, -20, 20, 20) -- Random movement
     particleSystem:setColors(

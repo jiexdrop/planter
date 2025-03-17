@@ -298,10 +298,11 @@ function updateEntities(dt)
           if distance <= ladybug.pollinationRange then
               plant.isPollinated = true
               
-              -- Start particle effect
+              -- Start particle effect - just emit once and set a timer
               plant.particleSystem:reset()
               plant.particleSystem:setPosition(plant.x + 10, plant.y + 10)
-              plant.particleSystem:emit(32)
+              plant.particleSystem:emit(32) -- Emit 32 particles just once
+              plant.particleTimer = 1.5 -- Set a timer for 1.5 seconds
               
               -- Start squish animation
               plant.animationTimer = 0
@@ -312,6 +313,17 @@ function updateEntities(dt)
       -- Update particle system
       if plant.particleSystem then
           plant.particleSystem:update(dt)
+          
+          -- Check if particle timer exists and is active
+          if plant.particleTimer then
+              plant.particleTimer = plant.particleTimer - dt
+              if plant.particleTimer <= 0 then
+                  -- Instead of clear(), just stop emitting and let existing particles fade out
+                  plant.particleSystem:setEmitterLifetime(0)
+                  plant.particleSystem:setEmissionRate(0)
+                  plant.particleTimer = nil -- Reset the timer
+              end
+          end
       end
       
       -- Update squish animation
