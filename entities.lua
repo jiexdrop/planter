@@ -161,18 +161,48 @@ function updateEntities(dt)
   timer = timer + dt
   
   if timer >= 3 then    
-    grassPos = math.random(0, 8)
+    -- Create a table of occupied positions
+    local occupiedPositions = {}
     
-    local grass = {
-      quad = quads.grass,
-      x = grassPos * 20,
-      y = 60,
-      serial = #entities,
-      name = "grass",
-      direction = true
-    }
+    -- Check plants positions
+    for _, plant in ipairs(plants) do
+      local gridX = plant.x / 20  -- Convert pixel position to grid position
+      occupiedPositions[gridX] = true
+    end
     
-    table.insert(entities, grass)
+    -- Check other entities positions (grass, etc.)
+    for _, entity in ipairs(entities) do
+      if entity.y == 60 then  -- Only check entities at grass level
+        local gridX = entity.x / 20
+        occupiedPositions[gridX] = true
+      end
+    end
+    
+    -- Find available positions
+    local availablePositions = {}
+    for i = 0, 8 do  -- 9 possible positions (0 to 8)
+      if not occupiedPositions[i] then
+        table.insert(availablePositions, i)
+      end
+    end
+    
+    -- Only spawn grass if there are available positions
+    if #availablePositions > 0 then
+      -- Pick a random available position
+      local randomIndex = math.random(1, #availablePositions)
+      local grassPos = availablePositions[randomIndex]
+      
+      local grass = {
+        quad = quads.grass,
+        x = grassPos * 20,
+        y = 60,
+        serial = #entities,
+        name = "grass",
+        direction = true
+      }
+      
+      table.insert(entities, grass)
+    end
     
     timer = 0
   end

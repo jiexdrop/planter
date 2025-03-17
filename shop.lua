@@ -4,20 +4,26 @@ local shop = {
     selectedItem = 1,
     items = {
         {
-            name = "Radish Seeds",
+            name = "Kale Seeds",
             price = 10,
             icon = nil,  -- We'll set this in init
             description = "Basic crop, grows quickly"
         },
         {
+            name = "Radish Seeds",
+            price = 100,
+            icon = nil,  -- We'll set this in init
+            description = "Basic crop, grows quickly"
+        },
+        {
             name = "Tomato Seeds",
-            price = 15,
+            price = 1000,
             icon = nil,
             description = "Takes longer but worth more"
         },
         {
             name = "Corn Seeds",
-            price = 20,
+            price = 2000,
             icon = nil,
             description = "High yield crop"
         }
@@ -70,8 +76,8 @@ function shop.draw()
     -- Draw shop window
     love.graphics.setColor(0.9, 0.9, 0.9, 1)
     local shopX = love.graphics.getWidth() / 2 - 100
-    local shopY = love.graphics.getHeight() / 2 - 150
-    love.graphics.rectangle("fill", shopX, shopY, 240, 320)
+    local shopY = love.graphics.getHeight() / 2 - 170
+    love.graphics.rectangle("fill", shopX, shopY, 240, 340)
     
     -- Draw shop title
     love.graphics.setColor(0, 0, 0, 1)
@@ -85,9 +91,9 @@ function shop.draw()
     
     -- Draw instructions
     love.graphics.setColor(0, 0, 0, 1)
-    love.graphics.print("Up/Down: Select", shopX + 10, shopY + 250)
-    love.graphics.print("Enter: Buy", shopX + 10, shopY + 270)
-    love.graphics.print("Esc: Close", shopX + 130, shopY + 270)
+    love.graphics.print("Up/Down: Select", shopX + 10, shopY + 270)
+    love.graphics.print("Enter: Buy", shopX + 10, shopY + 290)
+    love.graphics.print("Esc: Close", shopX + 130, shopY + 290)
     love.graphics.setColor(1, 1, 1, 1)
 end
 
