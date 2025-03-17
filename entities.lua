@@ -50,7 +50,7 @@ function setupEntities()
   end
 
   -- Grass entities
-  for baseX = 80, 120, 20 do
+  for baseX = 20, 160, 20 do
     table.insert(entities, {
       quad = quads.grass,
       x = baseX,
@@ -161,6 +161,19 @@ function updateEntities(dt)
   timer = timer + dt
   
   if timer >= 3 then    
+    grassPos = math.random(0, 8)
+    
+    local grass = {
+      quad = quads.grass,
+      x = grassPos * 20,
+      y = 60,
+      serial = #entities,
+      name = "grass",
+      direction = true
+    }
+    
+    table.insert(entities, grass)
+    
     timer = 0
   end
   

@@ -7,7 +7,7 @@ VIRTUAL_HEIGHT = 1600
 entities = {}
 
 harvestedCount = 0
-seedsCount = 0
+seedsCount = 1 -- intial seeds
 
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")

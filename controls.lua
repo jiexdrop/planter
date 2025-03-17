@@ -44,7 +44,7 @@ function love.mousepressed(x, y, button)
           end
           addGrass(gameX) -- Add grass on harvest
           harvestedCount = harvestedCount + 1
-          shop.money = shop.money + 20 
+          shop.money = shop.money + 10 
           clickedOnEntity = true
           harvestedPlant = true
           break
@@ -57,7 +57,7 @@ function love.mousepressed(x, y, button)
         if gameX >= entity.x and gameX < entity.x + 20 and
            gameY >= entity.y and gameY < entity.y + 20 then
           if entity.name == "grass" then
-            seedsCount = seedsCount + 1
+            --seedsCount = seedsCount + 1
             table.remove(entities, i)
           end
           clickedOnEntity = true

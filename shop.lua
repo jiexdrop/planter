@@ -1,6 +1,6 @@
 local shop = {
     isOpen = false,
-    money = 100,  -- Starting money
+    money = 0,  -- Starting money
     selectedItem = 1,
     items = {
         {
@@ -28,7 +28,7 @@ local function drawShopItem(item, x, y, selected)
     -- Draw selection background if selected
     if selected then
         love.graphics.setColor(0.8, 0.8, 0.9, 1)
-        love.graphics.rectangle("fill", x, y, 160, 40)
+        love.graphics.rectangle("fill", x, y, 180, 50)
     end
     
     -- Draw item
@@ -38,7 +38,7 @@ local function drawShopItem(item, x, y, selected)
     end
     
     -- Draw item info
-    love.graphics.print(item.name, x + 30, y + 5)
+    love.graphics.print(item.name, x + 30, y)
     love.graphics.print(item.price .. " coins", x + 30, y + 20)
 end
 
@@ -71,7 +71,7 @@ function shop.draw()
     love.graphics.setColor(0.9, 0.9, 0.9, 1)
     local shopX = love.graphics.getWidth() / 2 - 100
     local shopY = love.graphics.getHeight() / 2 - 150
-    love.graphics.rectangle("fill", shopX, shopY, 200, 300)
+    love.graphics.rectangle("fill", shopX, shopY, 240, 320)
     
     -- Draw shop title
     love.graphics.setColor(0, 0, 0, 1)
@@ -87,7 +87,8 @@ function shop.draw()
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.print("Up/Down: Select", shopX + 10, shopY + 250)
     love.graphics.print("Enter: Buy", shopX + 10, shopY + 270)
-    love.graphics.print("Esc: Close", shopX + 100, shopY + 270)
+    love.graphics.print("Esc: Close", shopX + 130, shopY + 270)
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 function shop.buySelected()
