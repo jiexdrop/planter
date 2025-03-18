@@ -23,6 +23,7 @@ function love.wheelmoved(x, y)
       end
   end
 end
+
 function love.mousepressed(x, y, button)
     if button == 1 then -- Left mouse button
         local sx = VIRTUAL_WIDTH / love.graphics.getWidth()
@@ -99,6 +100,21 @@ function love.mousepressed(x, y, button)
                 particleSystem = createPollinationParticles()
             }
             table.insert(plants, newPlant)
+            
+            -- After planting, check if we used the last seed of this type
+            if shop.seeds[plantType] == 0 then
+                -- Find any other seed type with available seeds
+                local foundNewType = false
+                for seedType, count in pairs(shop.seeds) do
+                    if count > 0 then
+                        shop.selectedSeedType = seedType
+                        foundNewType = true
+                        break
+                    end
+                end
+                
+                -- If no more seeds, just leave selectedSeedType as is (UI will handle showing no selection)
+            end
         end
     end
 end
@@ -121,6 +137,19 @@ function cycleSelectedSeed(direction)
         if count > 0 then
             table.insert(seedTypes, seedType)
         end
+    end
+    
+    -- If no seeds available, return early
+    if #seedTypes == 0 then
+        return
+    end
+    
+    -- Check if current selection is still valid (has seeds remaining)
+    local currentSeedCount = shop.seeds[shop.selectedSeedType] or 0
+    if currentSeedCount == 0 then
+        -- If current selection is invalid, select the first available seed type
+        shop.selectedSeedType = seedTypes[1]
+        return
     end
     
     -- Only cycle if we have more than one seed type
