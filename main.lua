@@ -1,6 +1,7 @@
 require("entities")
 require("controls")
 shop = require("shop")
+Button = require("button")
 
 VIRTUAL_WIDTH = 3200
 VIRTUAL_HEIGHT = 1600
@@ -26,12 +27,40 @@ function love.load()
   gameFont = love.graphics.newFont("m5x7.ttf", 32) 
   love.graphics.setFont(gameFont)
   
+  -- Create button quads
+  buttonQuads = {
+    normal = love.graphics.newQuad(120, 40, 20, 20, image:getDimensions()),
+    pressed = love.graphics.newQuad(140, 40, 20, 20, image:getDimensions())
+  }
+  
+  -- Example button - modify position and callback as needed
+  shopButton = Button.new(
+    370, 10,  -- Position in virtual coordinates
+    buttonQuads.normal,
+    buttonQuads.pressed,
+    image,
+    function() 
+      shop.toggle()
+    end
+  )
+  
   setupEntities()
   shop.init(image)
 end
 
 function love.update(dt)
   if gameState.current ~= "playing" then return end
+  
+  -- Get mouse state
+  local mouseX, mouseY = love.mouse.getPosition()
+  local mousePressed = love.mouse.isDown(1)  -- 1 is left mouse button
+
+  -- Convert screen coordinates to game coordinates (unsnapped for button)
+  local gameMouseX = mouseX / 2
+  local gameMouseY = mouseY / 2
+  
+  -- Update button with non-snapped coordinates
+  shopButton:update(gameMouseX, gameMouseY, mousePressed)
   
   updateEntities(dt)
   updateSun(dt)
@@ -147,6 +176,7 @@ function love.draw()
       love.graphics.setColor(1, 1, 1, 1)
   end
 
+  shopButton:draw()
   love.graphics.pop()
   
   if shop.isOpen then
